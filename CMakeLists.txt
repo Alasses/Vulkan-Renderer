@@ -11,8 +11,11 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+#set(ENV{VULKAN_SDK} "F:/Program/Vulkan")
+
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+#find_package(Vulkan REQUIRED FATAL_ERROR)
 
 set(PROJECT_SOURCES
         main.cpp
@@ -49,6 +52,7 @@ else()
 endif()
 
 target_link_libraries(Vulkan-Renderer PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+#target_link_libraries(Vulkan-Renderer PRIVATE ${Vulkan_LIBRARIES})
 
 set_target_properties(Vulkan-Renderer PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

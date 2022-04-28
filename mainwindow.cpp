@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent, VulkanWindow *w)
 
     VulkanWindow *vWindow = new VulkanWindow();
 
-    QLoggingCategory::setFilterRules(QStringLiteral("qt.vulkan=true"));
+    //QLoggingCategory::setFilterRules(QStringLiteral("qt.vulkan=true"));
 
     QWidget *wrapper = QWidget::createWindowContainer(vWindow);
     wrapper->setFocusPolicy(Qt::StrongFocus);
@@ -22,8 +22,6 @@ MainWindow::MainWindow(QWidget *parent, VulkanWindow *w)
 
     wrapper->resize(800, 600);
     wrapper->show();
-
-    printf("k\n");
 
     //w.resize(800, 600);
     //w.show();
