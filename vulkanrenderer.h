@@ -21,10 +21,6 @@ private:
         "VK_LAYER_KHRONOS_validation"
     };
 
-    const QByteArrayList deviceExtensions = {
-        VK_KHR_SWAPCHAIN_EXTENSION_NAME
-    };
-
     QVulkanInstance vInstance;
 
     //bool checkValidationLayerSupport();
@@ -33,7 +29,7 @@ private:
 class VulkanRenderer : public QVulkanWindowRenderer
 {
 public:
-    VulkanRenderer(VulkanWindow *w);
+    VulkanRenderer(VulkanWindow *window);
 
     //
     //  Some virtual functions, Qt build in pipeline
@@ -48,11 +44,19 @@ public:
 
 private:
 
+    const QByteArrayList deviceExtensions = {
+        VK_KHR_SWAPCHAIN_EXTENSION_NAME
+    };
+
     VulkanWindow *vWindow;
     QVulkanInstance *vInstance;
+    VkSurfaceKHR windowSurface;
 
     VkPhysicalDevice physicalDevice;
     VkDevice logicalDevice;
+
+    VkQueue graphicQueue;
+    VkCommandPool graphicCommandPool;
 
     QVulkanFunctions *vFunc;            //Normal Vulkan function access
     QVulkanDeviceFunctions *deviceFunc; //Normal Vulkan function requires a logical device
