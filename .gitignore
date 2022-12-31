@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# vs dir path
+.vs/
+out/

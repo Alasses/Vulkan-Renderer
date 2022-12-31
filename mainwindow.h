@@ -20,5 +20,11 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+    VulkanWindow* mVulkanWindow{ nullptr };
+    QVulkanInstance mVulkanInstance;
+
+    void SetupVulkanWindow();
+
 };
 #endif // MAINWINDOW_H

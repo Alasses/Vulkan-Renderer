@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "./ui_mainwindow.h"
+#include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent, VulkanWindow *w)
     : QMainWindow(parent)
@@ -7,11 +7,9 @@ MainWindow::MainWindow(QWidget *parent, VulkanWindow *w)
 {
     ui->setupUi(this);
 
-    VulkanWindow *vWindow = new VulkanWindow();
+    mVulkanWindow = new VulkanWindow();
 
-    //QLoggingCategory::setFilterRules(QStringLiteral("qt.vulkan=true"));
-
-    QWidget *wrapper = QWidget::createWindowContainer(vWindow);
+    QWidget *wrapper = QWidget::createWindowContainer(mVulkanWindow);
     wrapper->setFocusPolicy(Qt::StrongFocus);
     wrapper->setFocus();
 
@@ -20,16 +18,15 @@ MainWindow::MainWindow(QWidget *parent, VulkanWindow *w)
 
     ui->vWidget->setLayout(layout);
 
-    wrapper->resize(800, 600);
-    wrapper->show();
-
-    //w.resize(800, 600);
-    //w.show();
+    wrapper->resize(ui->vWidget->width(), ui->vWidget->height());
+    //wrapper->resize(1920, 1200);
+    //wrapper->show();
 
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete mVulkanWindow;
 }
 

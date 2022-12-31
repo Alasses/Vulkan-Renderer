@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(Vulkan-Renderer VERSION 0.1 LANGUAGES CXX)
+set(PROJECT_NAME Vulkan-Renderer)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_PREFIX_PATH $ENV{QTDIR})
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -11,50 +12,39 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-#set(ENV{VULKAN_SDK} "F:/Program/Vulkan")
-
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
-#find_package(Vulkan REQUIRED FATAL_ERROR)
+set(QT_VERSION_MAJOR 6)
 
 set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        vulkanloader.h
+        vulkanloader.cpp
         vulkanrenderer.h
         vulkanrenderer.cpp
         vulkanwidget.h
         vulkanwidget.cpp
 )
 
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(Vulkan-Renderer
-        MANUAL_FINALIZATION
-        ${PROJECT_SOURCES}
-    )
-# Define target properties for Android with Qt 6 as:
-#    set_property(TARGET Vulkan-Renderer APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-#                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-# For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
-else()
-    if(ANDROID)
-        add_library(Vulkan-Renderer SHARED
-            ${PROJECT_SOURCES}
-        )
-# Define properties for Android with Qt 5 after find_package() calls as:
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-    else()
-        add_executable(Vulkan-Renderer
-            ${PROJECT_SOURCES}
-        )
-    endif()
-endif()
+project(${PROJECT_NAME} VERSION 0.1 LANGUAGES CXX)
 
-target_link_libraries(Vulkan-Renderer PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
-#target_link_libraries(Vulkan-Renderer PRIVATE ${Vulkan_LIBRARIES})
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(Vulkan REQUIRED FATAL_ERROR)
 
-set_target_properties(Vulkan-Renderer PROPERTIES
+qt_standard_project_setup()
+
+qt_add_executable(${PROJECT_NAME}
+    MANUAL_FINALIZATION
+    ${PROJECT_SOURCES}
+)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Core)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${Vulkan_LIBRARIES})
+
+set_target_properties(${PROJECT_NAME} PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
@@ -63,5 +53,5 @@ set_target_properties(Vulkan-Renderer PROPERTIES
 )
 
 if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(Vulkan-Renderer)
+    qt_finalize_executable(${PROJECT_NAME})
 endif()
